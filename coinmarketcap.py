@@ -31,46 +31,58 @@ def scrape_coins(data):
                 price_col = columns[3].find('span')
                 d['price'] = price_col[0].text.strip()
 
-                daily_p = columns[4].find('span')
-                daily_span_neg = columns[4].find('.icon-Caret-down')
-                daily_span_pos = columns[4].find('.icon-Caret-up')
+                hourly_p = columns[4].find('span')
+                hourly_span_neg = columns[4].find('.icon-Caret-down')
+                hourly_span_pos = columns[4].find('.icon-Caret-up')
+                if hourly_span_neg:
+                    hourly_span_sym = '-'
+                elif hourly_span_pos:
+                    hourly_span_sym = '+'
+                if columns[4].text.strip() != '--':
+                    d['h1'] = hourly_span_sym + hourly_p[0].text.strip()
+                else:
+                    d['h1'] = '-'
+
+                daily_p = columns[5].find('span')
+                daily_span_neg = columns[5].find('.icon-Caret-down')
+                daily_span_pos = columns[5].find('.icon-Caret-up')
                 if daily_span_neg:
                     daily_span_sym = '-'
                 elif daily_span_pos:
                     daily_span_sym = '+'
-                if columns[4].text.strip() != '--':
+                if columns[5].text.strip() != '--':
                     d['h24'] = daily_span_sym + daily_p[0].text.strip()
                 else:
                     d['h24'] = '-'
 
-                weekly_p = columns[5].find('span')
-                weekly_span_neg = columns[5].find('.icon-Caret-down')
-                weekly_span_pos = columns[5].find('.icon-Caret-up')
+                weekly_p = columns[6].find('span')
+                weekly_span_neg = columns[6].find('.icon-Caret-down')
+                weekly_span_pos = columns[6].find('.icon-Caret-up')
                 if weekly_span_neg:
                     weekly_span_sym = '-'
                 elif weekly_span_pos:
                     weekly_span_sym = '+'
-                if columns[5].text.strip() != '--':
+                if columns[6].text.strip() != '--':
                     d['h7'] = weekly_span_sym + weekly_p[0].text.strip()
                 else:
                     d['h7'] = '-'
 
-                market_cap_col = columns[6].find('p')
-                if columns[6].text.strip() != '--':
-                    d['market_cap'] = market_cap_col[0].text.strip()
+                if columns[7].text.strip() != '--':
+                    market_cap_col = columns[7].find('span')[1]
+                    d['market_cap'] = market_cap_col.text.strip()
                 else:
                     d['market_cap'] = '-'
 
-                volume_daily_col = columns[7].find('p')
-                if columns[7].text.strip() != '--':
+                volume_daily_col = columns[8].find('p')
+                if columns[8].text.strip() != '--':
                     d['Volume_24h_dollar'] = volume_daily_col[0].text.strip()
                     d['Volume_24h_sym'] = volume_daily_col[1].text.strip()
                 else:
                     d['Volume_24h_dollar'] = '-'
                     d['Volume_24h_sym'] = '-'
 
-                circulating_supply_col = columns[8].find('p')
-                if columns[8].text.strip() != '--':
+                circulating_supply_col = columns[9].find('p')
+                if columns[9].text.strip() != '--':
                     d['circulating_supply'] = circulating_supply_col[0].text.strip()
                 else:
                     d['circulating_supply'] = '-'
